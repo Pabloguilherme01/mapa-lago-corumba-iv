@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e1b2b">
+  <meta name="description" content="Mapa interativo do Lago Corumbá IV: veja sua localização, marque pontos, desenhe linhas e áreas e exporte GeoJSON.">
+  <title>Mapa C4 | Lago Corumbá IV</title>
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoXf4y9BqfSGwg=" crossorigin="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <a class="skip" href="#map">Pular para o mapa</a>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-symbol" aria-hidden="true">C<span>4</span></div>
+      <div class="brand-text"><strong>Mapa Corumbá</strong><span>EXPLORADOR DO LAGO IV</span></div>
+    </div>
+    <div class="topbar-right"><span class="live-dot" aria-hidden="true"></span><span id="gps-header">GPS desativado</span><span class="topbar-divider" aria-hidden="true"></span><a href="https://github.com/new" target="_blank" rel="noopener noreferrer" class="header-link">Criar repositório ↗</a></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Ferramentas do mapa">
+      <section class="intro">
+        <div class="eyebrow"><span class="eyebrow-line"></span> MAPA INTERATIVO</div>
+        <h1>Lago Corumbá <span>IV.</span></h1>
+        <p>Explore a região, demarque pontos e áreas e use o GPS do celular para se localizar.</p>
+        <div class="tags"><span>Goiás, Brasil</span><span>7 municípios</span></div>
+      </section>
+
+      <section class="tool-section">
+        <div class="section-title"><span class="section-number">01</span><h2>Localização</h2></div>
+        <div class="control-grid">
+          <button class="action primary" id="btn-gps" type="button"><span aria-hidden="true">⌖</span><span>Ativar meu GPS</span></button>
+          <button class="action" id="btn-lake" type="button"><span aria-hidden="true">◈</span><span>Ver lago</span></button>
+        </div>
+        <p class="hint" id="gps-detail" role="status" aria-live="polite">Sua posição só aparece após você permitir a localização.</p>
+      </section>
+
+      <section class="tool-section">
+        <div class="section-title"><span class="section-number">02</span><h2>Demarcações</h2></div>
+        <p class="section-copy">Use a barra de desenho no mapa para adicionar marcações.</p>
+        <div class="draw-options" aria-label="Tipos de marcação">
+          <div class="draw-option"><span class="shape-icon point-shape">●</span><span><strong>Ponto</strong><small>Locais e referências</small></span></div>
+          <div class="draw-option"><span class="shape-icon line-shape">╱</span><span><strong>Linha</strong><small>Trajetos e medidas</small></span></div>
+          <div class="draw-option"><span class="shape-icon area-shape">⬡</span><span><strong>Área</strong><small>Polígonos e hectares</small></span></div>
+        </div>
+        <div class="marks-header"><span>Suas marcações <b id="mark-count">0</b></span><button class="text-button" type="button" id="btn-clear">Limpar tudo</button></div>
+        <div id="mark-list" class="mark-list" aria-live="polite"><p class="empty">Nenhuma marcação ainda.</p></div>
+      </section>
+
+      <section class="tool-section">
+        <div class="section-title"><span class="section-number">03</span><h2>Como chegar</h2></div>
+        <p class="section-copy">Defina um ponto de chegada em uma via ou acesso permitido próximo ao lago.</p>
+        <div class="control-grid"><button type="button" class="action" id="btn-arrival">✚ <span>Escolher chegada</span></button><button type="button" class="action" id="btn-route">↗ <span>Abrir rota</span></button></div>
+        <p class="hint" id="arrival-detail">Nenhum destino selecionado. Evite marcar o meio da água.</p>
+      </section>
+
+      <section class="tool-section file-section">
+        <div class="section-title"><span class="section-number">04</span><h2>Seus dados</h2></div>
+        <div class="control-grid"><button type="button" class="action" id="btn-export">↓ <span>Exportar GeoJSON</span></button><label for="input-import" class="action file-label">↑ <span>Importar arquivo</span></label></div>
+        <input id="input-import" type="file" accept=".json,.geojson,application/geo+json,application/json" hidden>
+        <p class="hint">As marcações são salvas apenas neste navegador. Exporte um arquivo para fazer backup.</p>
+      </section>
+      <footer class="sidebar-footer">Dados cartográficos © OpenStreetMap. Marcação de área aproximada, sem valor cadastral. GPS não é enviado a servidor deste site.</footer>
+    </aside>
+
+    <main class="map-wrapper" aria-label="Mapa interativo">
+      <div id="map" role="application" aria-label="Mapa com ferramentas para desenhar pontos, linhas e polígonos"></div>
+      <div class="map-top-info"><span class="map-top-dot"></span><span>LAGO CORUMBÁ IV</span><span class="map-divider">/</span><span id="map-mode">Visualização</span></div>
+      <div class="map-bottom-info"><span class="info-dot"></span><span id="status-message" role="status" aria-live="polite">Mapa carregado. Use as ferramentas para começar.</span></div>
+      <div class="map-compass" aria-hidden="true">N <span>↑</span></div>
+    </main>
+  </div>
+  <script>window.addEventListener('error', function(event){if(/leaflet/i.test(event.message||'')) {const el=document.getElementById('status-message'); if(el) el.textContent='Não foi possível carregar o mapa. Verifique a conexão com a internet.';}});</script>
+</body>
+</html>
