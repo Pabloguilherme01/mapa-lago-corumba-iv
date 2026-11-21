@@ -1,0 +1,12 @@
+{
+  "name": "mapa-lago-corumba-iv",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Mapa interativo do Lago Corumbá IV para desenhar pontos, linhas e áreas",
+  "scripts": {
+    "dev": "python -m http.server 4173",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm test && node --check src/main.js && node --check src/geojson.js"
+  }
+}
