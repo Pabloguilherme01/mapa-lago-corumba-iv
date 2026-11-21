@@ -37,7 +37,7 @@ Depois abra `http://localhost:4173` no navegador. Servidor local ou HTTPS é nec
 1. Crie um repositório chamado `mapa-lago-corumba-iv` no GitHub.
 2. Envie todos os arquivos da pasta para o ramo `main`.
 3. Em **Settings → Pages**, selecione **Deploy from a branch → main / (root)**.
-4. A URL será `https://SEU-USUARIO.github.io/mapa-lago-corumba-iv/` depois da implantação.
+4. Este projeto está publicado em: [**Mapa Corumbá IV**](https://pabloguilherme01.github.io/mapa-lago-corumba-iv/).
 
 O projeto não precisa de processo de compilação nem de chaves de API.
 

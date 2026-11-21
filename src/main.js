@@ -4,6 +4,7 @@ import {
 } from './geojson.js';
 
 const LAKE = [-16.1005, -48.28942]; // Referência de água: NÃO é entrada/rota por estrada.
+const OVERVIEW = [-16.23, -48.35]; // Enquadramento de visualização, NÃO um contorno oficial.
 const STORAGE_KEY = 'mapa-corumba-iv:marcacoes:v1';
 const $ = id => document.getElementById(id);
 const status = message => { $('status-message').textContent = message; };
@@ -13,7 +14,7 @@ if (!window.L || !L.Control.Draw) {
   throw new Error('Leaflet / Leaflet Draw indisponível.');
 }
 
-const map = L.map('map', {zoomControl:false, preferCanvas:true}).setView(LAKE,11);
+const map = L.map('map', {zoomControl:false, preferCanvas:true}).setView(OVERVIEW,10);
 L.control.zoom({position:'bottomright'}).addTo(map);
 const basemaps = {
   'Mapa de ruas': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -150,7 +151,7 @@ $('btn-clear').addEventListener('click',()=>{
   drawnItems.clearLayers();sync();status('Todas as marcações foram apagadas.');
 });
 $('btn-lake').addEventListener('click',()=>{
-  map.setView(LAKE,11);status('Visualização do Lago Corumbá IV.');
+  map.setView(OVERVIEW,10);status('Visualização geral do Lago Corumbá IV.');
 });
 $('btn-export').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(collect(),null,2)],{type:'application/geo+json'});
